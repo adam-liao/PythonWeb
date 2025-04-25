@@ -27,3 +27,12 @@
 * function
 * List
 * str
+
+### 變數
+``` python
+n = 5
+n + 10
+print(n)
+#====put====
+
+```
