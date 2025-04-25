@@ -12,3 +12,14 @@
 ### List ,Tuple, Set, dict
 
 ### string
+
+### python 語言
+- Python基本安裝
+- 1
+- 2
+- 3
+
+### python 語言
+1. 1111
+2. 2222
+3. 3333
