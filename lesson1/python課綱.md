@@ -20,9 +20,10 @@
 - 3 Set,dict
 ---
 ### python 語言\
-1. 1111
-2. 2222
-3. 3333
-4. function
-5. List
-6. str
++ 1111
++ 2222
++ 3333
+
+* function
+* List
+* str
