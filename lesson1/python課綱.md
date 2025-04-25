@@ -11,15 +11,15 @@
 
 ### List ,Tuple, Set, dict
 
-### string
+### string\
 ---
-### python 語言
+### python 語言  
 - Python基本安裝
 - 1 Var Operator
 - 2 Selelct
 - 3 Set,dict
 ---
-### python 語言
+### python 語言\
 1. 1111
 2. 2222
 3. 3333
