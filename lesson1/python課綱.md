@@ -15,9 +15,9 @@
 
 ### python 語言
 - Python基本安裝
-- 1
-- 2
-- 3
+- 1 Var Operator
+- 2 Selelct
+- 3 Set,dict
 
 ### python 語言
 1. 1111
