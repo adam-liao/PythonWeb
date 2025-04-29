@@ -14,4 +14,5 @@ https://www.youtube.com/watch?v=XuR9OEOZBxw
 https://www.youtube.com/watch?v=TsrRzjkaCS4
 
 $ git config --global user.name "John Doe"
+
 $ git config --global user.email johndoe@example.com
