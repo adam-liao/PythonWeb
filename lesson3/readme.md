@@ -2,3 +2,5 @@
 模組module裡的方法function
 如 random.sample(names,2)
 
+# 下載internet的資源
+
