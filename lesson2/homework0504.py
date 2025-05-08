@@ -4,7 +4,7 @@ import random as rnd
 student= []
 
 def readfile():
-    with open('./names.txt', 'r', encoding='utf-8') as f:
+    with open('../lesson2/names.txt', 'r', encoding='utf-8') as f:
         for line in f:
             name = line.strip()
             if name:
