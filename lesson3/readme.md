@@ -4,3 +4,9 @@
 
 # 下載internet的資源
 
+
+
+# 臨時跳過 SSL 驗證
+#verify=False 臨時跳過 SSL 驗證（不建議正式環境使用）
+response:Response = requests.get(url,verify=False)
+
