@@ -12,7 +12,8 @@ cd ~/文件/PythonWeb
 
 python3 -m venv venv
 
-source venv/bin/activate
+# source venv/bin/activate
+每次都要先執行 source venv/bin/activate
 
 ## 出現虛擬環境
 
