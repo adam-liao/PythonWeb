@@ -39,7 +39,9 @@ s = 1j * w
 # 元件值
 R1 = 1800        # 1.8kΩ
 C1 = 5e-6        # 5µF
+# C1 = 5e-6        # 5µF
 L2 = 0.29e-3     # 0.29mH
+# C2 = 5e-6        # 5µF
 C2 = 5e-6        # 5µF
 Rload = 4        # 喇叭 8Ω
 
@@ -56,15 +58,22 @@ Z2 = parallel(s * L2, 1 / (s * C2))
 # 總阻抗：Z1 → Z2 → 負載串聯
 Z_total = Z1 + Z2 + Rload
 
+title_str = f"頻率響應圖：{R1}Ω∥{C1 * 1e6:.0f}µF → {L2 * 1e3:.2f}mH∥{C2 * 1e6:.0f}µF → {Rload}Ω"
+# plt.title(title_str)
+
 # 電壓分壓比：喇叭上的電壓 / 總輸出
 H = Rload / Z_total
 H_dB = 20 * np.log10(np.abs(H))
+
+
 
 # 畫圖
 plt.figure(figsize=(10, 6))
 plt.semilogx(f, H_dB, label='頻率響應 (dB)')
 plt.axvline(1320, color='red', linestyle=':', label='陷波頻率 ≈1320Hz')
-plt.title("頻率響應圖：1.8kΩ∥5µF → 0.29mH∥5µF → 4Ω")
+
+# plt.title("頻率響應圖：1.8kΩ∥5µF → 0.29mH∥5µF → 4Ω")
+plt.title(title_str)
 plt.xlabel("頻率 (Hz)")
 plt.ylabel("增益 (dB)")
 plt.grid(True, which='both', ls='--')
