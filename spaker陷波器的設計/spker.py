@@ -22,15 +22,6 @@ else:
 
 plt.rcParams['axes.unicode_minus'] = False  # 避免負號顯示錯誤
 
-
-
-
-
-
-
-
-
-
 # 頻率範圍：1Hz ~ 20kHz（對數刻度）
 f = np.logspace(0, 5, num=2000)  # 1 Hz ~ 100 kHz for better視覺化
 w = 2 * np.pi * f
