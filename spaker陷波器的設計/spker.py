@@ -3,9 +3,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
-# plt.rcParams['font.family'] = 'PingFang TC'
+
+#plt.rcParams['font.family'] = 'PingFang TC'
 # plt.rcParams['font.family'] = 'Heiti TC'   # 黑體
-plt.rcParams['font.family'] = 'Arial Unicode MS' # 支援多語系
+#plt.rcParams['font.family'] = 'Arial Unicode MS 微軟新細明' # 支援多語系 mac
+
+
+#import matplotlib.pyplot as plt
+import platform
+
+if platform.system() == 'Darwin':  # macOS
+    plt.rcParams['font.family'] = ['Arial Unicode MS']
+elif platform.system() == 'Windows':  # Windows
+    plt.rcParams['font.family'] = ['Microsoft JhengHei']
+else:
+    # Linux 或其他系統，建議使用開源中文字型
+    plt.rcParams['font.family'] = ['Noto Sans CJK TC']
+
+plt.rcParams['axes.unicode_minus'] = False  # 避免負號顯示錯誤
+
+
+
+
+
+
+
+
+
 
 # 頻率範圍：1Hz ~ 20kHz（對數刻度）
 f = np.logspace(0, 5, num=2000)  # 1 Hz ~ 100 kHz for better視覺化
