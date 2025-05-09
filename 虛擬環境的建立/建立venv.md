@@ -15,7 +15,7 @@ python3 -m venv venv
 # source venv/bin/activate
 每次都要先執行 source venv/bin/activate
 
-## 出現虛擬環境
+## 出現虛擬環境 (venv)
 
 (venv) adamliao@ChundeMac-mini PythonWeb % which python
 
