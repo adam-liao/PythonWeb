@@ -1,16 +1,20 @@
 ## 測試有沒有虛擬環境
 
+```bash
 which python3
 
 which pip
+```
 
 代表沒有建立虛擬環境 pip not found
 
 ## 建立虛擬環境
 
+```bash
 cd ~/文件/PythonWeb
 
 python3 -m venv venv
+```
 
 # source venv/bin/activate
 每次都要先執行 source venv/bin/activate
@@ -29,16 +33,27 @@ which pip
 
 ## 安裝requests
 
+```bash
 pip install requests
 
 pip install --upgrade pip
+```
 
 ## 回到虛擬環境起動的方式
 
+```bash
 cd ~/文件/PythonWeb
 
 source venv/bin/activate
+```
 
+## ✅ 離開虛擬環境的指令：
+
+```bash
+deactivate
+```
+
+執行後，終端機前方的 (venv) 提示符號就會消失，代表你已經回到系統的預設 Python 環境。
 
 ✅ 是否每次都要執行 cd 和 source venv/bin/activate？
 
