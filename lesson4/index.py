@@ -1,11 +1,12 @@
-from flask import Flask
+from flask import Flask,render_template
+# 要載入 這二個套件
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return "<h1>Hello, World! Flask! </h1><img src='https://fakeimg.pl/300x200/C00CCC' alt=''>"
-
+    return render_template("index.html.jinja2")
+# 這裡要指向首頁檔案的名稱
 
 @app.route("/user")
 def user():
