@@ -16,3 +16,11 @@ https://www.youtube.com/watch?v=TsrRzjkaCS4
 $ git config --global user.name "John Doe"
 
 $ git config --global user.email johndoe@example.com
+
+# 進入虛擬環境
+
+conda activate myenv
+
+# 安裝
+
+pip install -r requirements.txt   

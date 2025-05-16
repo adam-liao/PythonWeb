@@ -4,3 +4,7 @@
 
 .ipynb 是用來學習研究的 
 
+# 啟動flask
+
+flask --app index run
+
