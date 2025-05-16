@@ -142,32 +142,59 @@ footer {
         transform: translateY(-50%);
     }
 
-    .main-navigation {
-        display: none;
-        /* 隱藏原始導覽列 */
-        width: 100%;
-        order: 3;
-        /* 調整顯示順序，讓它在 logo 和按鈕之後 */
-        margin-top: 15px;
-    }
-
-    .main-navigation.toggled {
-        display: block;
-        /* 當 .toggled class 被加入時顯示選單 */
-    }
-
-    .main-navigation ul {
-        flex-direction: column;
-        /* 選單項目垂直排列 */
-        align-items: center;
-        /* 選單項目置中 */
-    }
-
-    .main-navigation ul li {
-        margin: 10px 0;
-        /* 垂直間距 */
-        width: 100%;
-    }
+        .main-navigation {
+            display: none;
+            /* 隱藏原始導覽列 */
+            width: 100%;
+            order: 3;
+            /* 調整顯示順序，讓它在 logo 和按鈕之後 */
+            margin-top: 15px;
+            /* order: 3; /* No longer needed with absolute positioning */
+            /* margin-top: 15px; /* No longer needed with absolute positioning */
+    
+            /* New styles for absolute positioning to make it an overlay dropdown */
+            position: absolute;
+            top: 100%;
+            /* Position its top at the bottom of .site-header .container (its relative parent) */
+            left: 0;
+            right: 0;
+            /* Ensures it takes full width of .site-header .container */
+            background-color: #fff;
+            /* Background for the dropdown; white is clean and contrasts with the green header */
+            z-index: 1000;
+            /* Ensure it's above other page content */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+            /* Adds a subtle shadow for better visual separation */
+        }
+    
+        .main-navigation.toggled {
+            display: block;
+            /* 當 .toggled class 被加入時顯示選單 */
+        }
+    
+        .main-navigation ul {
+            flex-direction: column;
+            /* 選單項目垂直排列 */
+            align-items: center;
+            /* 選單項目置中 */
+    
+            .main-navigation ul li {
+                margin: 10px 0;
+                /* 垂直間距 */
+                width: 100%;
+                width: 100%;
+                /* List items take full width of the dropdown */
+            }
+    
+            .main-navigation ul li a {
+                display: block;
+                /* 讓連結佔滿整個 li */
+                text-align: center;
+                padding: 12px 0;
+                +padding: 12px 0;
+                /* Retain original padding for links */
+            }
+        }
 
     .main-navigation ul li a {
         display: block;
