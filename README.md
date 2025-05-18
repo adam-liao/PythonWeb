@@ -21,6 +21,9 @@ $ git config --global user.email johndoe@example.com
 
 conda activate myenv
 
+mac os
+source venv/bin/activate
+
 # 安裝
 
 pip install -r requirements.txt   
