@@ -3,7 +3,7 @@ import yt_dlp
 
 # 影片網址（可以改成你要下載的）
 video_url = "https://www.youtube.com/live/MNz1wuJ4LJQ"
-video_url = "https://www.youtube.com/live/MNz1wuJ4LJQ"
+video_url = "https://www.youtube.com/watch?v=QJjSLe8Kt4I&list=RDMMQJjSLe8Kt4I&start_radio=1"
 
 # 設定 yt-dlp 的選項
 ydl_opts = {
