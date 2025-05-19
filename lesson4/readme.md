@@ -8,6 +8,9 @@
 
 flask --app index run
 
+flask --app index run --debug
+
+## --debug 的說明
 
 # 3頁網頁
 

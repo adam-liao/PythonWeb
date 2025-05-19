@@ -1,3 +1,6 @@
+# 0519
+
+
 # 資料類型要分辨清楚很重要
 
 每個實體都有自己的屬性及方法
@@ -7,6 +10,8 @@
 # 啟動flask
 
 flask --app index run
+
+flask --app index run --debug
 
 
 # 3頁網頁
