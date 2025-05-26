@@ -8,7 +8,13 @@ def index():
 
 @app.route("/classes")
 def classes():
-    return render_template("classes.html.jinja2")
+    name = "LIAO CHUN CHING"
+    weekdays = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
+    return render_template("classes.html.jinja2",name=name,weekdays=weekdays)
+
+    # name = "Robert"
+    # return render_template("classes.html.jinja2",name=name)
+
 
 @app.route("/new")
 def new():
