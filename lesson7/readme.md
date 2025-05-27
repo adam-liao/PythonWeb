@@ -35,3 +35,14 @@ def user():
 def product():
     return "<h1>product!</h1><p>這是我的第3頁</p>"
 
+
+##  data base 
+
+徐國堂
+上午11:34
+
+https://www.perplexity.ai/search/5f35f47f-0d7c-4e5f-81af-a1ea18956b53
+
+徐國堂
+下午1:59
+https://www.perplexity.ai/search/70c25534-bfcf-4321-a964-7e94173806c7
