@@ -5,18 +5,33 @@ import seaborn as sns
 from sklearn.linear_model import LinearRegression
 import numpy as np
 import matplotlib.pyplot as plt
+import platform
 
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = [
-    'Microsoft JhengHei',
-    'MingLiU',
-    'Taipei Sans TC Beta',
-    'Noto Sans CJK TC'
-]
-plt.rcParams['axes.unicode_minus'] = False  # 正常顯示負號
+# plt.rcParams['font.family'] = 'sans-serif'
+# plt.rcParams['font.sans-serif'] = [
+#     'Microsoft JhengHei',
+#     'MingLiU',
+#     'Taipei Sans TC Beta',
+#     'Noto Sans CJK TC'
+# ]
+# plt.rcParams['axes.unicode_minus'] = False  # 正常顯示負號
 
-plt.title('報酬率散佈圖與回歸趨勢線')
-plt.show()
+# plt.title('報酬率散佈圖與回歸趨勢線')
+# plt.show()
+
+
+# ✅ 自動判斷作業系統並設定對應字體（支援中文與負號）
+if platform.system() == 'Darwin':  # macOS
+    plt.rcParams['font.family'] = ['Arial Unicode MS']  # 或 PingFang TC / Heiti TC
+elif platform.system() == 'Windows':  # Windows
+    plt.rcParams['font.family'] = ['Microsoft JhengHei']  # 微軟正黑體
+else:  # Linux / Ubuntu
+    plt.rcParams['font.family'] = ['Noto Sans CJK TC']  # 開源中文字體
+
+plt.rcParams['axes.unicode_minus'] = False  # 正常顯示負號（避免顯示成亂碼）
+
+
+
 
 # 報酬率散佈圖 + 回歸線 + 模型斜率】
 
