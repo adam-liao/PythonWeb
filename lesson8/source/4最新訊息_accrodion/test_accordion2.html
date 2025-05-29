@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accordion Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="accordion">
+        <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false" aria-controls="section1-content">
+                Section 1
+                <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+            <div class="accordion-content" id="section1-content" role="region" aria-labelledby="section1-header" hidden>
+                <p>This is the content for section 1. It can contain any HTML elements you need.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false" aria-controls="section2-content">
+                Section 2
+                <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+            <div class="accordion-content" id="section2-content" role="region" aria-labelledby="section2-header" hidden>
+                <p>This is the content for section 2. More details can go here.</p>
+                <ul>
+                    <li>Item A</li>
+                    <li>Item B</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false" aria-controls="section3-content">
+                Section 3
+                <span class="accordion-icon" aria-hidden="true"></span>
+            </button>
+            <div class="accordion-content" id="section3-content" role="region" aria-labelledby="section3-header" hidden>
+                <p>Content for section 3. You can customize this as much as you like.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
