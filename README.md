@@ -39,3 +39,6 @@ pip freeze > requirements.txt
 # 打開 VSCODE 第一件事
 
 git pull --no-rebase
+
+
+
