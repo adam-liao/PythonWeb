@@ -5,3 +5,4 @@ myenv
 __pycache__
 .env
 lesson7_1.ipynb
+claude_*.jason
