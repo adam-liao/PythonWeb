@@ -41,7 +41,7 @@ def classes(course_types):
             "進修課程"
         WHERE
             "課程類別" = '{course_types}'
-        LIMIT 6;
+        LIMIT 12;
         """
         cur.execute(sql_course)
         course_data = cur.fetchall()
