@@ -126,3 +126,38 @@ importance_df = pd.DataFrame({
 
 print("隨機森林特徵重要性：")
 print(importance_df)
+
+'''
+precision    recall  f1-score   support
+
+           0       0.00      0.00      0.00       156
+           1       0.56      1.00      0.72       196
+
+    accuracy                           0.56       352
+   macro avg       0.28      0.50      0.36       352
+weighted avg       0.31      0.56      0.40       352
+
+邏輯回歸模型係數：
+   Feature  Coefficient
+0      DXY    -0.000396
+1  USD_TWD    -0.000221
+✅ Step 9：Random Forest 預測
+
+🌲 Random Forest 預測結果：
+準確率： 0.4744318181818182
+              precision    recall  f1-score   support
+
+           0       0.41      0.40      0.40       156
+           1       0.53      0.54      0.53       196
+
+    accuracy                           0.47       352
+   macro avg       0.47      0.47      0.47       352
+weighted avg       0.47      0.47      0.47       352
+
+隨機森林特徵重要性：
+   Feature  Importance
+1  USD_TWD    0.504282
+0      DXY    0.495718
+
+
+'''
