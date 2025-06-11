@@ -1,0 +1,9 @@
+[*********************100%***********************]  1 of 1 completed
+[*********************100%***********************]  1 of 1 completed
+YF.download() has changed argument auto_adjust default to True
+
+美元上/下漲對黃金漲跌影響：
+     Gold_Down   Gold_Up
+DXY                     
+0     0.319815  0.680185
+1     0.603352  0.396648
