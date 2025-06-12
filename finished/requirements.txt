@@ -1,0 +1,11 @@
+requests
+Flask
+psycopg[binary]
+psycopg2-binary
+python-dotenv
+yfinance
+matplotlib
+pandas 
+yfinance 
+seaborn
+scikit-learn
