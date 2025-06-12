@@ -21,24 +21,25 @@
 </div>
 <section class="testimonial-grid">
   <div class="card-grid">
-  {%for course in course_data%}
-    <div class="testimonial-card">
-      <div class="quote-text">{{course[0]}}</div>
-      <div class="author-block">
-        <div class="avatar">
-          <span>F</span>
-          <!-- <img src="Card_Grid_Icon.png" alt="陳小明 頭像"> -->
-        </div>
-        <div class="author-info">
-          <div class="author-title">{{course[1]}}</div>
-          <div class="author-description">軟體工程師</div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-
+  {%for course in course_data%}  
     
-
+    <div class="card">
+        <div class="card-content">
+            <p class="card-category">{{course[1]}}</p>
+            <h3 class="card-title">{{course[0]}}</h3>
+            <div class="card-info">
+                <div class="card-divider"></div>
+                <div class="card-details">
+                    <p class="card-info-item">進修人數:{{course[2]}}</p>
+                    <p class="card-info-item">進修時數:{{course[3]}}</p>
+                    <p class="card-info-item">進修費用:{{course[4]}}</p>
+                    <p class="card-info-item">上課時間:{{course[5]}}</p>
+                    <p class="card-info-item">開始日期:{{course[6]}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  {% endfor %}
   </div>
 </section>
 <script src="{{ url_for('static',filename='js/classes.js')}}"></script>
