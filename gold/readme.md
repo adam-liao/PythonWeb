@@ -1,6 +1,9 @@
 python gold/gold_usd_twd_分析.py
 
-python gold/gold_usd_twd_analysis.py    
+python gold/gold_usd_twd_analysis.py   
+
+#加入RSI跟MACD
+python gold/gold_usd_twd_analysis2.py    
 
 gold/
 ├── gold_usd_twd_analysis.py
