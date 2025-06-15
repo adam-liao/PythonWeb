@@ -72,6 +72,7 @@ plt.title("黃金報酬 vs 美元 ETF 報酬")
 plt.xlabel("美元報酬率")
 plt.ylabel("黃金報酬率")
 plt.tight_layout()
+# 儲存繪製好的圖表為圖片檔案
 plt.savefig("./gold/scatter_gold_dxy.png")
 plt.close()
 
@@ -81,6 +82,7 @@ plt.figure(figsize=(6,5))
 sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
 plt.title("報酬率相關係數熱力圖")
 plt.tight_layout()
+# 儲存繪製好的圖表為圖片檔案
 plt.savefig("./gold/correlation_heatmap.png")
 plt.close()
 
@@ -98,6 +100,7 @@ plt.title("美元漲跌 vs 黃金漲跌機率")
 plt.xlabel("美元漲跌 (0=跌, 1=漲)")
 plt.ylabel("黃金漲跌比例")
 plt.tight_layout()
+# 儲存繪製好的圖表為圖片檔案
 plt.savefig("./gold/gold_usd_crosstab.png")
 plt.close()
 print("✅ Step 8.2 視覺化交叉表完成")
@@ -135,6 +138,9 @@ print(coef_df)
 # ✅ Step 11: Random Forest
 print("✅ Step 11: Random Forest 預測")
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+# 使用訓練資料訓練隨機森林模型
+# X_train：訓練特徵資料（例如 RSI、MACD 等技術指標）
+# y_train：對應的目標值（此處為黃金的報酬率）
 rf_model.fit(X_train, y_train)
 y_pred_rf = rf_model.predict(X_test)
 
