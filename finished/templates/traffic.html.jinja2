@@ -1,10 +1,65 @@
 {% extends "layout/base.html.jinja2" %}
 {% block title %}
-職能發展學院-交通路線
+職能發展學院-專題一-廖純慶-期末專題報告
 {% endblock %}
 
 {% block main %}
-<h1>{{self.title()}}</h1>
+<h1>📘 專題一：《台灣ETF與台積電股價之關聯性分析》</h1>
+<p>（來源：02_廖純慶_TVDI_AI 期末專題報告.pdf）</p>
 
-{{ super() }}
+<h2>🔹 專題特色</h2>
+<ul>
+    <li>聚焦台積電報酬率與各大台灣ETF（0050、0056、00878、00692）之間的聯動性。</li>
+    <li>採用線性回歸模型（Linear Regression），評估各ETF對台積電報酬率的敏感度（Beta值）。</li>
+    <li>融合統計視覺化工具（散佈圖、趨勢線、盒鬚圖、Z分數圖）輔助判讀。</li>
+    <li>明確呈現每檔ETF與台積電的斜率、截距與相關係數（R值），幫助投資人了解結構風險。</li>
+    <li>分析結論實用：提供投資人資產配置參考依據，釐清高股息ETF與市值型ETF對台積電依賴度差異。</li>
+</ul>
+
+<h2>🔸 數據分析流程說明</h2>
+<ol>
+    <li>
+        <strong>資料蒐集</strong>
+        <ul>
+            <li>來源：Yahoo Finance</li>
+            <li>標的：台積電與四檔主要ETF（0050、0056、00878、00692）</li>
+            <li>時間區間：2022/01/01 ~ 2025/04/30</li>
+        </ul>
+    </li>
+    <li>
+        <strong>資料處理</strong>
+        <ul>
+            <li>計算每日報酬率（Daily Return）</li>
+            <li>處理缺失值（NaN），進行標準化處理（Z-score）</li>
+        </ul>
+    </li>
+    <li>
+        <strong>特徵工程</strong>
+        <ul>
+            <li>特徵變數：台積電報酬率</li>
+            <li>目標變數：各ETF報酬率</li>
+        </ul>
+    </li>
+    <li>
+        <strong>模型訓練與分析</strong>
+        <ul>
+            <li>使用監督式學習：LinearRegression</li>
+            <li>計算斜率（Beta）、截距（Alpha）、皮爾森相關係數（R）</li>
+        </ul>
+    </li>
+    <li>
+        <strong>視覺化</strong>
+        <ul>
+            <li>繪製散佈圖 + 趨勢線、報酬盒鬚圖、標準化盒鬚圖</li>
+            <li>解釋每個回歸模型的解釋力與線性關係</li>
+        </ul>
+    </li>
+</ol>
+
+<!-- 新增下載連結 -->
+<div style="margin-top: 20px;">
+   <a href="{{ url_for('static', filename='/project1.pdf') }}" target="_blank" style="text-decoration: none; color: blue; font-weight: bold;">
+    📥 點此下載專題報告 PDF
+</a>
+</div>
 {% endblock %}

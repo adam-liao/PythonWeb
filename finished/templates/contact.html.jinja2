@@ -1,10 +1,66 @@
 {% extends "layout/base.html.jinja2" %}
 {% block title %}
-職能發展學院-跟我聯絡
+職能發展學院-專題二-廖純慶-期末專題報告
 {% endblock %}
 
 {% block main %}
-<h1>{{self.title()}}</h1>
 
-{{ super() }}
+
+<h1>📙 專題二：《黃金、美金與台幣之關聯性分析與預測模型》</h1>
+<p>（來源：02_B廖純慶_TVDI_AI 期末專題報告2.pdf）</p>
+
+<h3>🔹 專題特色</h3>
+<ul>
+    <li>探討黃金報酬率與美元指數、新台幣匯率的相關性。</li>
+    <li>結合技術分析指標（RSI、MACD）與機器學習分類模型（Logistic Regression、Random Forest）。</li>
+    <li>專注於預測黃金隔日漲跌方向（上漲為1，下跌為0）。</li>
+    <li>製作交叉表分析（如：美元上漲 vs 黃金下跌的機率），驗證經濟常識。</li>
+    <li>評估模型預測能力（accuracy、precision、recall、f1-score），並呈現預測 vs 實際走勢圖。</li>
+</ul>
+
+<h3>🔸 數據分析流程說明</h3>
+<ol>
+    <li>
+        <strong>資料蒐集</strong>
+        <ul>
+            <li>黃金價格（GC=F）、美元ETF（UUP）、新台幣匯率（USD/TWD）</li>
+            <li>來源：Yahoo Finance / 人工整理匯率資料</li>
+        </ul>
+    </li>
+    <li>
+        <strong>資料處理與特徵工程</strong>
+        <ul>
+            <li>計算日報酬率（Return）</li>
+            <li>加入技術指標：RSI（14日）、MACD、MACD signal</li>
+        </ul>
+    </li>
+    <li>
+        <strong>交叉分析</strong>
+        <ul>
+            <li>製作黃金 vs 美元漲跌的交叉表</li>
+            <li>用視覺化呈現黃金受美元與匯率影響的方向與機率</li>
+        </ul>
+    </li>
+    <li>
+        <strong>模型建立</strong>
+        <ul>
+            <li>LogisticRegression：預測黃金是否上漲</li>
+            <li>RandomForestClassifier：進一步比較非線性模型效能</li>
+        </ul>
+    </li>
+    <li>
+        <strong>模型評估與圖表輸出</strong>
+        <ul>
+            <li>指標：accuracy、precision、recall、f1-score</li>
+            <li>視覺化：散佈圖、熱力圖、交叉表圖、預測 vs 實際圖</li>
+        </ul>
+    </li>
+</ol>
+
+<!-- 新增下載連結 -->
+<div style="margin-top: 20px;">
+   <a href="{{ url_for('static', filename='/project2.pdf') }}" target="_blank" style="text-decoration: none; color: blue; font-weight: bold;">
+    📥 點此下載專題報告 PDF
+</a>
+</div>
 {% endblock %}
