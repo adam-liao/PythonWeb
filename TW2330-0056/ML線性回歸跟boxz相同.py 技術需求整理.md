@@ -1,126 +1,53 @@
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
-
 # ML線性回歸跟boxz相同.py 技術需求整理
 
-## 一、技術需求
+## 程式目的
 
-### 1. 基本環境
+此程式旨在利用線性回歸模型分析並預測與台灣股市相關的數據，可能涉及台積電 (2330) 和元大高股息 (0056) 的股價或相關指標。程式中提到了 "boxz"，這可能是一個特定的數據處理步驟或指標名稱，與線性回歸模型結合使用。
 
-- Python 3.x
-- 常用數據處理與科學計算套件（如 numpy、pandas）
-- 視覺化套件（如 matplotlib）
-- 若有用到機器學習框架，則需安裝 scikit-learn 或 PyTorch 等[^1][^2][^3]。
+## 技術需求
 
+### 函式庫 (Libraries)
 
-### 2. 程式主要功能
+程式需要以下 Python 函式庫：
 
-- 實現線性回歸（Linear Regression）模型，並可選擇以最小二乘法或梯度下降法訓練參數[^1][^3][^4]。
-- 支援單變量或多變量特徵輸入[^2][^3]。
-- 可進行模型訓練、預測與模型評估（如均方根誤差 RMSE）[^1][^3][^4]。
+*   **pandas**: 用於數據處理和分析，特別是處理時間序列數據和 DataFrame。
+*   **numpy**: 用於數值計算，特別是陣列操作。
+*   **sklearn**: 用於機器學習模型的建立、訓練和評估。具體需要：
+    *   `sklearn.linear_model.LinearRegression`: 線性回歸模型。
+    *   `sklearn.model_selection.train_test_split`: 用於分割訓練集和測試集。
+    *   `sklearn.metrics`: 用於評估模型性能 (例如 `mean_squared_error`, `r2_score` 等，具體取決於程式碼中的使用)。
+*   **matplotlib.pyplot**: 用於數據視覺化，繪製圖表。
+*   **seaborn**: 基於 Matplotlib 的統計數據視覺化函式庫，用於繪製更美觀的圖表。
+*   **yfinance**: 用於下載金融市場數據 (例如股票價格)。
+*   **os**: 用於與作業系統互動 (可能用於檔案路徑操作等)。
+*   **platform**: 用於偵測作業系統，以便進行跨平台設定 (例如字體)。
 
+### 資料來源 (Data Sources)
 
-### 3. 資料需求
+*   **yfinance**: 用於下載股票或其他金融商品的歷史數據 (例如 2330 和 0056 的股價)。
+*   **本地 CSV 檔案**: 程式可能從本地 CSV 檔案讀取額外的數據，例如與 "boxz" 相關的數據或其他指標。
 
-- 輸入資料需包含特徵（X）與標籤（y），格式可為 list、numpy array 或 pandas DataFrame[^1][^2][^4]。
+### 執行環境 (Execution Environment)
 
----
+*   **Python 虛擬環境 (venv)**: 建議在虛擬環境中安裝和管理所需的函式庫，以避免版本衝突。
+*   **作業系統**: 程式碼包含跨平台字體設定，應可在 macOS, Windows, Linux 等系統上執行。
 
-## 二、模型說明
+## 模型 (Model)
 
-### 1. 線性回歸模型
+*   **模型類型**: 線性回歸 (Linear Regression)
+*   **用途**: 用於建立自變數 (特徵) 與應變數 (目標) 之間的線性關係模型，進行預測或分析。
 
-- 形式：\$ y = w \cdot x + b \$（單變量）或 \$ y = w_1 x_1 + w_2 x_2 + ... + b \$（多變量）[^2][^3][^4]。
-- 目標：最小化預測值與真實值之間的均方誤差（MSE）[^3][^4]。
+## 參數與超參數 (Parameters and Hyperparameters)
 
+線性回歸模型本身的主要「參數」是在訓練過程中學習到的係數 (coefficients) 和截距 (intercept)，這些不是由使用者設定的超參數。
 
-### 2. 參數與超參數
+對於 `sklearn.linear_model.LinearRegression`，主要的超參數通常是其預設值，除非程式碼中有明確設定：
 
-| 名稱 | 說明 | 預設值/範例 |
-| :-- | :-- | :-- |
-| `learning_rate` | 學習率，控制梯度下降時每步更新幅度 | 0.01、0.1 等[^1][^3] |
-| `n_epochs` | 訓練迭代次數 | 100、1000 等[^1][^3] |
-| `batch_size` | 每批訓練樣本數（若採用 mini-batch SGD） | 10、32 等[^3][^5] |
-| `w` | 權重參數，依特徵數決定數量 | 隨機初始化[^3][^4] |
-| `b` | 偏置參數 | 隨機初始化[^3][^4] |
-| `regularization` | 正則化方法（如 L2、L1），防止過擬合 | 可選[^4][^6] |
-| `random_seed` | 隨機種子，確保結果可重現 | 任意整數[^6] |
+*   `fit_intercept`: 預設為 `True`。表示模型是否計算截距。如果設定為 `False`，則模型假設數據已經中心化，並且回歸線通過原點。
+*   `copy_X`: 預設為 `True`。如果為 `True`，則 X 會被複製；否則，可能會被覆蓋。
+*   `n_jobs`: 預設為 `None`。用於指定計算時使用的 CPU 核心數。`None` 表示使用 1 個核心，`-1` 表示使用所有可用核心。
 
+**注意**: 程式碼中可能會對數據進行預處理 (例如標準化、特徵選擇等)，這些步驟的參數 (如標準化的平均值和標準差) 是從數據中學習到的，而不是模型本身的超參數。此外，數據分割 (`train_test_split`) 的參數 (如 `test_size`, `random_state`) 也會影響模型的訓練和評估結果，但它們是數據分割的參數，而非模型超參數。
 
----
-
-## 三、主要流程
-
-1. **資料前處理**
-    - 讀取與整理資料，必要時進行標準化或編碼[^2][^3]。
-2. **模型初始化**
-    - 權重 `w`、偏置 `b` 隨機初始化[^3][^4]。
-3. **訓練方法**
-    - 最小二乘法：直接計算封閉解[^3][^4]。
-    - 梯度下降法：反覆根據損失函數梯度更新參數（需設置 learning_rate, n_epochs）[^1][^3][^4]。
-4. **預測與評估**
-    - 使用訓練後的模型對新數據進行預測[^1][^3]。
-    - 評估指標：均方根誤差（RMSE）、均方誤差（MSE）等[^1][^3][^4]。
-
----
-
-## 四、範例程式片段
-
-```python
-# 訓練參數
-learning_rate = 0.1
-n_epochs = 100
-
-# 梯度下降訓練
-for epoch in range(n_epochs):
-    # 計算預測值與損失
-    # 更新 w, b
-    pass
-```
-
-
----
-
-## 五、補充說明
-
-- 若需支援多元特徵，需確保資料格式正確，並適當調整權重維度[^2][^3]。
-- 可選用正則化以提升泛化能力，常見如 L2（Ridge）、L1（Lasso）[^4][^6]。
-- 若有需求可加入交叉驗證、特徵選擇等進階功能[^7][^6]。
-
----
-
-**參考文獻皆已在文中以 [\#] 標註。**
-
-<div style="text-align: center">⁂</div>
-
-[^1]: https://blog.csdn.net/qq_37978800/article/details/115188018
-
-[^2]: https://ithelp.ithome.com.tw/articles/10347816
-
-[^3]: https://zh.d2l.ai/chapter_linear-networks/linear-regression-scratch.html
-
-[^4]: https://blog.csdn.net/qq_43045620/article/details/123079305
-
-[^5]: https://www.cnblogs.com/jaww/p/12297848.html
-
-[^6]: https://docs.azure.cn/zh-cn/machine-learning/component-reference/linear-regression?view=azureml-api-2
-
-[^7]: https://www.cnblogs.com/leezx/p/15719492.html
-
-[^8]: https://www.cnblogs.com/LXP-Never/p/11426648.html
-
-[^9]: https://hackmd.io/@Maxlight/HyQwUQ1RO
-
-[^10]: https://cloud.tencent.com/developer/article/2304668
-
-[^11]: https://blog.csdn.net/u010891397/article/details/90758990
-
-[^12]: https://blog.51cto.com/u_15178976/2790770
-
-[^13]: https://blog.csdn.net/weixin_51658186/article/details/135049600
-
-[^14]: https://cloud.tencent.com/developer/article/1660241
-
-[^15]: https://blog.51cto.com/u_15441143/4673560
-
-[^16]: https://github.com/lawlite19/MachineLearning_Python
+請提供程式碼內容，以便進行更精確的分析和參數/超參數說明。
 
