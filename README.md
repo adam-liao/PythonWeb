@@ -24,6 +24,10 @@ conda activate myenv
 mac os
 source venv/bin/activate
 
+
+source "/Users/adamliao/文件/PythonWeb/.venv/bin/activate"
+
+
 # 安裝
 
 pip install -r requirements.txt   
