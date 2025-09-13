@@ -1,25 +1,34 @@
-
-#VIDEO_URL = "https://youtu.be/6xXdlpmZwHI?si=-6rBOxq3LXGbZ6Ri"
-
-
-# 2025/09/13-11:58
+# 2025/09/13-12:45 OK
+#"/Users/adamliao/文件/PythonWeb/.venv/bin/python3" /Users/adamliao/文件/PythonWeb/you2bedownload/yt2text.py
 import os
 import re
 import shutil
 import datetime
 from pathlib import Path
+import textwrap
 
 import yt_dlp
 from faster_whisper import WhisperModel
 
 
 # ========= 可調參數 =========
-VIDEO_URL = "https://youtube.com/live/oUKOUOiCYY0"   # 目標影片
-DOWNLOAD_DIR = os.path.expanduser("~/Downloads/YT2Text")     # 輸出資料夾
+# 1) 要處理的 YouTube 連結（更改這行就能換影片）
+VIDEO_URL = "https://youtube.com/live/MNz1wuJ4LJQ"
+
+# 2) 輸出資料夾（預設放在 ~/Downloads/YT2Text）
+DOWNLOAD_DIR = os.path.expanduser("~/Downloads/YT2Text")
+
+# 3) 若影片多為中文，建議固定語言 "zh"（不確定可設 None 自動偵測）
+FORCE_LANGUAGE = "zh"  # 或 None
+
+# 4) 模型大小：tiny/base/small/medium/large-v3
+MODEL_SIZE = "small"   # M4 上建議先用 small（速度/準度平衡）
+
+# 5) 嘗試抓的字幕語言優先序
 PREFERRED_SUB_LANGS = ["zh-Hant", "zh-TW", "zh", "zh-Hans", "en"]
-AUDIO_FORMAT = "wav"       # 轉錄建議用 wav（無損）
-MODEL_SIZE = "medium"      # faster-whisper 模型大小：tiny/base/small/medium/large-v3
-FORCE_LANGUAGE = None      # None=自動偵測；若多為中文可設 "zh"
+
+# 6) SRT 每行最大字元數（讓字幕較好讀）
+SRT_WRAP_WIDTH = 28
 
 
 # ========= 小工具 =========
@@ -39,10 +48,11 @@ def srt_timestamp(sec: float) -> str:
     s, ms = divmod(rem, 1000)
     return f"{h:02}:{m:02}:{s:02},{ms:03}"
 
-def write_srt(segments, srt_path: Path):
-    with open(srt_path, "w", encoding="utf-8") as f:
+def write_srt(segments, srt_path: Path, width=SRT_WRAP_WIDTH):
+    with srt_path.open("w", encoding="utf-8") as f:
         for i, seg in enumerate(segments, start=1):
-            f.write(f"{i}\n{srt_timestamp(seg['start'])} --> {srt_timestamp(seg['end'])}\n{seg['text'].strip()}\n\n")
+            text = textwrap.fill(seg["text"].strip(), width=width)
+            f.write(f"{i}\n{srt_timestamp(seg['start'])} --> {srt_timestamp(seg['end'])}\n{text}\n\n")
 
 
 # ========= 1) 先嘗試抓字幕 =========
@@ -52,7 +62,8 @@ def try_download_subtitles(url: str, out_dir: Path) -> tuple[Path | None, str]:
     回傳：(srt_path or None, normalized_title)
     """
     ensure_dir(out_dir)
-    # 先探測資訊（拿標題）
+
+    # 先探測影片資訊，取標題
     with yt_dlp.YoutubeDL({"quiet": True, "skip_download": True, "noplaylist": True}) as ydl:
         info = ydl.extract_info(url, download=False)
         title = slugify(info.get("title") or "youtube_video")
@@ -70,7 +81,7 @@ def try_download_subtitles(url: str, out_dir: Path) -> tuple[Path | None, str]:
         "postprocessors": [{"key": "FFmpegSubtitlesConvertor", "format": "srt"}],
     }
 
-    # 執行下載字幕
+    print("① 嘗試下載字幕…")
     had_sub = False
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -82,14 +93,16 @@ def try_download_subtitles(url: str, out_dir: Path) -> tuple[Path | None, str]:
     if not had_sub:
         return None, title
 
-    # 返回第一個找到的 srt
+    # 取得第一個 srt
     srt_candidates = sorted(out_dir.glob(f"{title}*.srt"))
     return (srt_candidates[0] if srt_candidates else None), title
 
 
-# ========= 2) 沒字幕就抓音訊 =========
-def download_audio(url: str, out_dir: Path, audio_ext=AUDIO_FORMAT) -> Path:
+# ========= 2) 沒字幕就抓音訊（wav） =========
+def download_audio(url: str, out_dir: Path, audio_ext="wav") -> Path:
     ensure_dir(out_dir)
+
+    # 先探測標題
     with yt_dlp.YoutubeDL({"quiet": True, "skip_download": True, "noplaylist": True}) as ydl:
         info = ydl.extract_info(url, download=False)
         title = slugify(info.get("title") or "youtube_audio")
@@ -104,27 +117,48 @@ def download_audio(url: str, out_dir: Path, audio_ext=AUDIO_FORMAT) -> Path:
             {"key": "FFmpegExtractAudio", "preferredcodec": audio_ext, "preferredquality": "0"},
         ],
     }
+
+    print("② 沒有字幕，改下載音訊…")
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
-    # 目標音訊
     audio_path = out_dir / f"{base.name}.{audio_ext}"
     if not audio_path.exists():
-        # 後備：找同名開頭的目標音訊
         candidates = sorted(out_dir.glob(f"{base.name}*.{audio_ext}"))
         if not candidates:
             raise FileNotFoundError("找不到轉出的音訊檔")
         audio_path = candidates[0]
+
+    print(f"✅ 音訊已就緒：{audio_path}")
     return audio_path
 
 
 # ========= 3) 用 faster-whisper 轉錄 =========
 def transcribe_with_faster_whisper(audio_path: Path, out_dir: Path, model_size=MODEL_SIZE, language=FORCE_LANGUAGE):
-    model = WhisperModel(model_size, device="auto", compute_type="auto")
-    seg_iter, info = model.transcribe(str(audio_path), language=language)
+    print("③ 載入轉錄模型…（首次會讀快取/下載）")
+    model = WhisperModel(
+        model_size,
+        device="cpu",                # 在 Apple Silicon 上用 CPU 後端最穩
+        compute_type="int8",         # 相容性高、速度佳
+        cpu_threads=os.cpu_count()   # 吃滿 CPU 執行緒
+    )
+
+    print("④ 開始轉錄…")
+    seg_iter, info = model.transcribe(
+        str(audio_path),
+        language=language,
+        vad_filter=True,
+        vad_parameters={"min_speech_duration_ms": 300},
+        beam_size=1,   # 貪婪解碼，較快
+        best_of=1,
+    )
 
     segments, full_text = [], []
+    n = 0
     for seg in seg_iter:
+        n += 1
+        if n % 10 == 1:  # 每 10 段回報一次進度
+            print(f"   進度：第 {n} 段，{seg.start:.1f}s → {seg.end:.1f}s")
         segments.append({"start": seg.start, "end": seg.end, "text": seg.text})
         full_text.append(seg.text)
 
@@ -132,10 +166,12 @@ def transcribe_with_faster_whisper(audio_path: Path, out_dir: Path, model_size=M
     txt_path = out_dir / f"{title}.txt"
     srt_path = out_dir / f"{title}.srt"
 
-    with open(txt_path, "w", encoding="utf-8") as f:
-        f.write(("".join(full_text)).strip() + "\n")
+    txt_path.write_text(("".join(full_text)).strip() + "\n", encoding="utf-8")
     write_srt(segments, srt_path)
 
+    print("✅ 轉錄完成：")
+    print("   TXT →", txt_path)
+    print("   SRT →", srt_path)
     return txt_path, srt_path
 
 
@@ -144,44 +180,38 @@ def main():
     out_dir = Path(DOWNLOAD_DIR)
     ensure_dir(out_dir)
 
-    # ffmpeg 檢查
     if shutil.which("ffmpeg") is None:
-        print("⚠️ 找不到 ffmpeg，請先安裝（macOS 可用 `brew install ffmpeg`）")
+        print("⚠️ 找不到 ffmpeg，請在 macOS 裝：brew install ffmpeg")
 
-    print("① 嘗試下載字幕…")
     srt_path, title = try_download_subtitles(VIDEO_URL, out_dir)
     if srt_path and srt_path.exists():
         print(f"✅ 找到字幕：{srt_path}")
-        # 同步輸出純文字（去掉 srt 序號與時間）
+        # 另存純文字（去除序號與時間戳）
         txt_path = srt_path.with_suffix(".txt")
         buf = []
-        with open(srt_path, "r", encoding="utf-8") as f:
-            for line in f:
-                t = line.strip()
-                if not t:
-                    continue
-                if re.fullmatch(r"\d+", t):        # 去序號
-                    continue
-                if re.match(r"^\d{2}:\d{2}:\d{2},\d{3} --> ", t):  # 去時間戳
-                    continue
-                buf.append(t)
-        with open(txt_path, "w", encoding="utf-8") as fo:
-            fo.write("\n".join(buf) + "\n")
+        for line in srt_path.read_text(encoding="utf-8").splitlines():
+            t = line.strip()
+            if not t:
+                continue
+            if re.fullmatch(r"\d+", t):
+                continue
+            if re.match(r"^\d{2}:\d{2}:\d{2},\d{3} --> ", t):
+                continue
+            buf.append(t)
+        txt_path.write_text("\n".join(buf) + "\n", encoding="utf-8")
         print(f"✅ 已輸出純文字：{txt_path}")
         return
 
-    print("② 沒有字幕，改下載音訊並轉錄…")
-    audio_path = download_audio(VIDEO_URL, out_dir, audio_ext=AUDIO_FORMAT)
-    print(f"✅ 音訊已就緒：{audio_path}")
-
-    txt_path, srt_from_whisper = transcribe_with_faster_whisper(audio_path, out_dir)
-    print(f"✅ 轉錄完成：{txt_path}")
-    print(f"✅ SRT 字幕：{srt_from_whisper}")
+    # 沒有字幕 → 下載音訊並轉錄
+    audio_path = download_audio(VIDEO_URL, out_dir, audio_ext="wav")
+    transcribe_with_faster_whisper(audio_path, out_dir)
 
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
+        import traceback
         print("發生錯誤：", e)
+        traceback.print_exc()
         raise
